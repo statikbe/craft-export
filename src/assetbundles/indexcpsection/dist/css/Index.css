@@ -1,0 +1,56 @@
+/**
+ * Export plugin for Craft CMS
+ *
+ * Index Field CSS
+ *
+ * @author    Statik
+ * @copyright Copyright (c) 2019 Statik
+ * @link      https://statik.be
+ * @package   Export
+ * @since     1.0.0
+ */
+.container--center {
+    display: block;
+    text-align: center;
+}
+
+.container--center img {
+    display: block;
+    width: 150px;
+    margin: 10em auto 25px auto;
+}
+
+.element-group {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.element-group-sub {
+    display: block;
+    color: #a1a1a1;
+}
+
+.flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: start;
+}
+
+.flex-space-around {
+    justify-content: space-around;
+}
+
+.halfwidth {
+    width: 45%;
+}
+
+.width-60 {
+    width: 60%;
+}
+
+.border-right {
+    padding-right: 2%;
+    border-right: 1px solid rgba(0, 0, 20, 0.1);;
+}

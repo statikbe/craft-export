@@ -1,0 +1,9 @@
+{% set groupId = export.elementGroup[elementType] %}
+
+{% if groupId %}
+    {% set usergroup = craft.app.usergroups.getGroupById(groupId) %}
+
+    {% if usergroup %}
+        <span class="element-group">{{ usergroup.name }}</span>
+    {% endif %}
+{% endif %}

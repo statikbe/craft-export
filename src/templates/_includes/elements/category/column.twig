@@ -1,0 +1,9 @@
+{% set categoryId = export.elementGroup[elementType] %}
+
+{% if categoryId %}
+    {% set category = craft.app.categories.getGroupById(categoryId) %}
+
+    {% if category %}
+        <span class="element-group">{{ category.name }}</span>
+    {% endif %}
+{% endif %}

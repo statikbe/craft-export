@@ -1,0 +1,44 @@
+{
+    "name": "statikbe/craft-export",
+    "description": "Export elements from Craft",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "export"
+    ],
+    "support": {
+        "docs": "https://github.com/statikbe/export/blob/master/README.md",
+        "issues": "https://github.com/statikbe/export/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Statik",
+            "homepage": "https://statik.be"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1",
+        "cocur/slugify": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+          "statikbe\\export\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Export",
+        "handle": "export",
+        "hasCpSettings": false,
+        "hasCpSection": true,
+        "changelogUrl": "https://raw.githubusercontent.com/statikbe/export/master/CHANGELOG.md",
+        "components": {
+            "exportService": "statikbe\\export\\services\\ExportService"
+        },
+        "class": "statikbe\\export\\Export"
+    }
+}

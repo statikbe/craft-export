@@ -1,0 +1,13 @@
+{% import '_includes/forms' as forms %}
+
+{% set usergroups = element.groups %}
+
+{{ forms.selectField({
+    label: "User Group" | t('export'),
+    instructions: 'Choose the user group you want to export.' | t('export'),
+    id: 'elementGroup-' ~ elementType,
+    name: 'elementGroup[' ~ elementType ~ ']',
+    options: craft.export.getSelectOptions(usergroups),
+    value: export.elementGroup[elementType] ?? '',
+    required: true,
+}) }}

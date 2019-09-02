@@ -1,0 +1,50 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("statikbe\\export\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{% set crumbs = [
+    { label: 'Export', url: url('export/exports') },
+    { label: export.name, url: url('export/exports/' ~ export.id) },
+    { label: 'Settings', url: url('export/exports/' ~ export.id ~ '/settings') },
+] %}
+
+{% set title = 'Export'|t('export') %}
+
+{% block content %}
+
+    <div class="fullwidth flex flex-space-around">
+        <div class="halfwidth border-right">
+            <h2>{{ 'Download export'|t('export') }}</h2>
+            <p>Nihil hic munitissimus habendi senatus locus, nihil horum? Ullamco laboris nisi ut aliquid ex ea commodi
+                consequat. Salutantibus vitae elit libero, a pharetra augue. Quis aute iure reprehenderit in voluptate
+                velit esse.</p>
+            <a class="btn submit" href="{{ actionUrl('export/export/download-export', {'exportId': export.id}) }}">{{ 'Download'|t('export') }} {{ export.filename ~ '.' ~ export.exportType }}</a>
+        </div>
+        <div class="halfwidth">
+            <h2>{{ 'Send export to e-mail address'|t('export') }}</h2>
+
+            <form method="post">
+                {{ csrfInput() }}
+
+                <input type="hidden" name="action" value="export/export/send-export">
+                <input type="hidden" name="exportId" value="{{ export.id }}">
+
+                {{ forms.textField({
+                    first: true,
+                    label: "E-mail Address"|t('export'),
+                    id: 'emailaddress',
+                    name: 'emailaddress',
+                    errors: export.getErrors('emailaddress'),
+                    required: true,
+                }) }}
+
+                <input type="submit" class="btn submit" value="{{ 'Send'|t('export') }}">
+
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}
