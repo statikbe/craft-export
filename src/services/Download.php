@@ -7,11 +7,7 @@ use craft\base\Component;
 use craft\elements\Category;
 use craft\elements\Entry;
 use craft\elements\User;
-use craft\fields\Date;
 use craft\helpers\Json;
-use craft\helpers\Path;
-use statikbe\export\Export;
-
 
 class Download extends Component
 {
@@ -42,18 +38,21 @@ class Download extends Component
 
         // fill array with elementFields
         if (isset($settings['elementData'])) {
-            foreach ($settings['elementData'] as $field => $selected) {
+            foreach ($settings['elementData'] as $handle => $selected) {
                 if ($selected) {
-                    array_push($headings, $field);
+                    array_push($headings, $handle);
                 }
             }
         }
 
         // fill array with custom fields
         if (isset($settings['customData'])) {
-            foreach ($settings['customData'] as $field => $selected) {
+            foreach ($settings['customData'] as $handle => $selected) {
                 if ($selected) {
-                    array_push($headings, $field);
+                    $field = Craft::$app->fields->getFieldByHandle($handle);
+                    if ($field) {
+                        array_push($headings, $field->name);
+                    }
                 }
             }
         }
@@ -73,7 +72,11 @@ class Download extends Component
 
         if (isset($settings['filterData'])) {
             if (isset($settings['filterData']['sortBy'])) {
-                $elements->orderBy($settings['filterData']['sortBy']);
+                if (isset($settings['filterData']['sortByAsc'])) {
+                    $elements->orderBy($settings['filterData']['sortBy'] . ' ' . $settings['filterData']['sortByAsc']);
+                } else {
+                    $elements->orderBy($settings['filterData']['sortBy']);
+                }
             }
             if (isset($settings['filterData']['status'])) {
                 $elements->status($settings['filterData']['status']);

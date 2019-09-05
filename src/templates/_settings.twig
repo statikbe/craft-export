@@ -19,21 +19,36 @@
     <input type="hidden" name="action" value="export/export/save-settings">
     <input type="hidden" name="exportId" value="{{ export.id }}">
 
-    {#<h2>{{ 'You can filter your data and order the elements'|t('export') }}</h2>#}
+    <h2>{{ 'Give settings to your export'|t('export') }}</h2>
 
     {% if export.getElementTypeDisplayName() == 'User' %}
 
-        {{ forms.selectField({
-            label: 'Sort data by'|t('export'),
-            id: 'sortBy',
-            name: 'fields[filterData][sortBy]',
-            options: {
-                'id': 'ID',
-                'dateCreated': 'Date Created',
-                'email' : 'E-mail Address'
-            },
-            value: settings.filterData is defined ? settings.filterData.sortBy : 'id',
-        }) }}
+        <div class="inline">
+            <div class="inline__item">
+                {{ forms.selectField({
+                    label: 'Sort data by'|t('export'),
+                    id: 'sortBy',
+                    name: 'fields[filterData][sortBy]',
+                    options: {
+                        'id': 'ID',
+                        'dateCreated': 'Date Created',
+                        'email' : 'E-mail Address'
+                    },
+                    value: settings.filterData is defined ? settings.filterData.sortBy : 'id',
+                }) }}
+            </div>
+            <div class="inline__item">
+                {{ forms.selectField({
+                    id: 'sortByAsc',
+                    name: 'fields[filterData][sortByAsc]',
+                    options: {
+                        'asc': 'Ascending',
+                        'desc': 'Descending'
+                    },
+                    value: settings.filterData is defined and settings.filterData.sortByAsc is defined ? settings.filterData.sortByAsc : 'asc',
+                }) }}
+            </div>
+        </div>
 
         <div class="field">
             <div class="heading">
@@ -54,18 +69,33 @@
 
     {% elseif export.getElementTypeDisplayName() == 'Entry' %}
 
-        {{ forms.selectField({
-            label: 'Sort data by'|t('export'),
-            id: 'sortBy',
-            name: 'fields[filterData][sortBy]',
-            options: {
-                'id': 'ID',
-                'title': 'Title',
-                'postDate': 'Post Date',
-                'dateCreated': 'Date Created'
-            },
-            value: settings.filterData is defined ? settings.filterData.sortBy : 'id',
-        }) }}
+        <div class="inline">
+            <div class="inline__item">
+                {{ forms.selectField({
+                    label: 'Sort data by'|t('export'),
+                    id: 'sortBy',
+                    name: 'fields[filterData][sortBy]',
+                    options: {
+                        'id': 'ID',
+                        'title': 'Title',
+                        'postDate': 'Post Date',
+                        'dateCreated': 'Date Created'
+                    },
+                    value: settings.filterData is defined and settings.filterData.sortBy ? settings.filterData.sortBy : 'id',
+                }) }}
+            </div>
+            <div class="inline__item">
+                {{ forms.selectField({
+                    id: 'sortByAsc',
+                    name: 'fields[filterData][sortByAsc]',
+                    options: {
+                        'asc': 'Ascending',
+                        'desc': 'Descending'
+                    },
+                    value: settings.filterData is defined and settings.filterData.sortByAsc is defined ? settings.filterData.sortByAsc : 'asc',
+                }) }}
+            </div>
+        </div>
 
         <div class="field">
             <div class="heading">
@@ -80,23 +110,39 @@
                     'expired': 'Expired',
                     'disabled': 'Disabled'
                 },
-                values: settings.filterData is defined ? settings.filterData.status : ['live', 'pending'],
+                values: settings.filterData is defined ? settings.filterData.status : ['live', 'pending']
             }) }}
         </div>
 
     {% elseif export.getElementTypeDisplayName() == 'Category' %}
 
-        {{ forms.selectField({
-            label: 'Sort data by'|t('export'),
-            id: 'sortBy',
-            name: 'fields[filterData][sortBy]',
-            options: {
-                'id': 'ID',
-                'title': 'Title',
-                'dateCreated': 'Date Created'
-            },
-            value: settings.filterData is defined ? settings.filterData.sortBy : 'id',
-        }) }}
+        <div class="inline">
+            <div class="inline__item">
+                {{ forms.selectField({
+                    label: 'Sort data by'|t('export'),
+                    id: 'sortBy',
+                    name: 'fields[filterData][sortBy]',
+                    options: {
+                        'id': 'ID',
+                        'title': 'Title',
+                        'dateCreated': 'Date Created'
+                    },
+                    value: settings.filterData is defined ? settings.filterData.sortBy : 'id',
+                }) }}
+            </div>
+            <div class="inline__item">
+                {{ forms.selectField({
+                    id: 'sortByAsc',
+                    name: 'fields[filterData][sortByAsc]',
+                    options: {
+                        'asc': 'Ascending',
+                        'desc': 'Descending'
+                    },
+                    value: settings.filterData is defined and settings.filterData.sortByAsc is defined ? settings.filterData.sortByAsc : 'asc',
+                }) }}
+            </div>
+        </div>
+
 
         <div class="field">
             <div class="heading">
@@ -125,7 +171,7 @@
         <table class="data fullwidth collapsible">
             <tbody>
             <tr>
-                <th colspan="3"><h4>{{ "Basic fields"|t('export') }}</h4></th>
+                <th colspan="3"><h4 class="pt-10 pb-10">{{ "Basic fields"|t('export') }}</h4></th>
             </tr>
             <tr>
                 <td>
@@ -135,8 +181,8 @@
                         checked: settings.elementData.id is defined ? (settings.elementData.id == 1 ? true : false) : true,
                     }) }}
                 </td>
-                <td><strong>ID</strong></td>
-                <td class="light">Number</td>
+                <td>{{ 'ID'|t('export') }}</td>
+                <td class="light">{{ 'Number'|t('export') }}</td>
             </tr>
             {% if export.getElementTypeDisplayName() == 'User' %}
                 <tr>
@@ -147,8 +193,8 @@
                             checked: settings.elementData.email is defined ? (settings.elementData.email == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>E-mail Address</strong></td>
-                    <td class="light">E-mail</td>
+                    <td>{{ 'E-mail Address'|t('export') }}</td>
+                    <td class="light">{{ 'E-mail'|t('export') }}</td>
                 </tr>
                 <tr>
                     <td>
@@ -158,8 +204,8 @@
                             checked: settings.elementData.firstName is defined ? (settings.elementData.firstName == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>First Name</strong></td>
-                    <td class="light">Plain Text</td>
+                    <td>{{ 'First Name'|t('export') }}</td>
+                    <td class="light">{{ 'Plain Text'|t('export') }}</td>
                 </tr>
                 <tr>
                     <td>
@@ -169,8 +215,8 @@
                             checked: settings.elementData.lastName is defined ? (settings.elementData.lastName == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>Last Name</strong></td>
-                    <td class="light">Plain Text</td>
+                    <td>{{ 'Last Name'|t('export') }}</td>
+                    <td class="light">{{ 'Plain Text'|t('export') }}</td>
                 </tr>
                 <tr>
                     <td>
@@ -180,8 +226,8 @@
                             checked: settings.elementData.status is defined ? (settings.elementData.status == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>Status</strong></td>
-                    <td class="light">Dropdown</td>
+                    <td>{{ 'Status'|t('export') }}</td>
+                    <td class="light">{{ 'Dropdown'|t('export') }}</td>
                 </tr>
                 <tr>
                     <td>
@@ -191,8 +237,8 @@
                             checked: settings.elementData.dateCreated is defined ? (settings.elementData.dateCreated == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>Date Created</strong></td>
-                    <td class="light">Date/Time</td>
+                    <td>{{ 'Date Created'|t('export') }}</td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
                 <tr>
                     <td>
@@ -202,8 +248,8 @@
                             checked: settings.elementData.lastLoginDate is defined ? (settings.elementData.lastLoginDate == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>Last Login Date</strong></td>
-                    <td class="light">Date/Time</td>
+                    <td>{{ 'Last Login Date'|t('export') }}</td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
             {% elseif export.getElementTypeDisplayName() == 'Category' or export.getElementTypeDisplayName() == 'Entry' %}
                 <tr>
@@ -214,8 +260,8 @@
                             checked: settings.elementData.title is defined ? (settings.elementData.title == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>Title</strong></td>
-                    <td class="light">Plain Text</td>
+                    <td>{{ 'Title'|t('export') }}</td>
+                    <td class="light">{{ 'Plain Text'|t('export') }}</td>
                 </tr>
                 {% if export.getElementTypeDisplayName() == 'Entry' %}
                     <tr>
@@ -226,8 +272,8 @@
                                 checked: settings.elementData.author is defined ? (settings.elementData.author == 1 ? true : false) : true,
                             }) }}
                         </td>
-                        <td><strong>Author</strong></td>
-                        <td class="light">E-mail</td>
+                        <td>{{ 'Author'|t('export') }}</td>
+                        <td class="light">{{ 'E-mail'|t('export') }}</td>
                     </tr>
                     <tr>
                         <td>
@@ -237,8 +283,8 @@
                                 checked: settings.elementData.postDate is defined ? (settings.elementData.postDate == 1 ? true : false) : true,
                             }) }}
                         </td>
-                        <td><strong>Post Date</strong></td>
-                        <td class="light">Date/Time</td>
+                        <td>{{ 'Post Date'|t('export') }}</td>
+                        <td class="light">{{ 'Date/Time'|t('export') }}</td>
                     </tr>
                 {% endif %}
                 <tr>
@@ -249,8 +295,8 @@
                             checked: settings.elementData.dateCreated is defined ? (settings.elementData.dateCreated == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>Date Created</strong></td>
-                    <td class="light">Date/Time</td>
+                    <td>{{ 'Date Created'|t('export') }}</td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
                 <tr>
                     <td>
@@ -260,15 +306,15 @@
                             checked: settings.elementData.dateUpdated is defined ? (settings.elementData.dateUpdated == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td><strong>Date Updated</strong></td>
-                    <td class="light">Date/Time</td>
+                    <td>{{ 'Date Updated'|t('export') }}</td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
             {% endif %}
 
 
             {% if fields|length %}
                 <tr>
-                    <th colspan="3"><h4>{{ "Custom fields"|t('export') }}</h4></th>
+                    <th colspan="3"><h4 class="pt-10 pb-10">{{ "Custom fields"|t('export') }}</h4></th>
                 </tr>
 
                 {% for field in fields %}
