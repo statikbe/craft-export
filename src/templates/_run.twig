@@ -10,11 +10,11 @@
     { label: 'Settings', url: url('export/exports/' ~ export.id ~ '/settings') },
 ] %}
 
-{% set title = 'Export'|t('export') %}
+{% set title = 'Run your export'|t('export') %}
 
 {% block content %}
 
-    <div class="fullwidth flex flex-space-around">
+    {#<div class="fullwidth flex flex-space-around">
         <div class="halfwidth border-right">
             <h2>{{ 'Download export'|t('export') }}</h2>
             <p>Nihil hic munitissimus habendi senatus locus, nihil horum? Ullamco laboris nisi ut aliquid ex ea commodi
@@ -45,6 +45,17 @@
             </form>
 
         </div>
+    </div>#}
+
+    {# TODO: create a task and run in backgound #}
+    {# TODO: show loader (see Feed Me) #}
+
+    <div class="container--center">
+        <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'female-office-worker.png') }}"
+             alt="Construction worker">
+        <h1>{{ "Your export is ready to run"|t('export') }}</h1>
+        <p>{{ 'Click the button below to run your export. This page will reload showing progress.'|t('export') }}</p>
+        <a class="btn submit" href="{{ actionUrl('export/export/download-export', {'exportId': export.id}) }}">{{ 'Run your export'|t('export') }}</a>
     </div>
 
 {% endblock %}

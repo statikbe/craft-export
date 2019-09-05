@@ -96,12 +96,13 @@ class Export extends Plugin
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
-                $event->rules['/export/exports'] = 'export/export/overview';
-                $event->rules['/export/welcome'] = 'export/export/welcome';
-                $event->rules['/export/exports/new'] = 'export/export/edit-export';
-                $event->rules['/export/exports/<exportId>'] = 'export/export/edit-export';
-                $event->rules['/export/exports/<exportId>/settings'] = 'export/export/edit-settings';
-                $event->rules['/export/exports/<exportId>/export'] = 'export/export/export-ready';
+                $event->rules['/export/exports'] = 'export/template/overview';
+                $event->rules['/export/welcome'] = 'export/template/welcome';
+                $event->rules['/export/exports/new'] = 'export/template/edit-export';
+                $event->rules['/export/exports/<exportId>'] = 'export/template/edit-export';
+                $event->rules['/export/exports/<exportId>/settings'] = 'export/template/edit-settings';
+                $event->rules['/export/exports/<exportId>/run'] = 'export/template/export-ready';
+                $event->rules['/export/exports/<exportId>/download'] = 'export/template/export-download';
             }
         );
 

@@ -34,65 +34,7 @@ class ExportController extends Controller
 
     protected $allowAnonymous = [];
 
-    public function actionWelcome()
-    {
-        return $this->renderTemplate('export/_welcome');
-    }
-
-    public function actionOverview()
-    {
-        $variables['exports'] = Exports::instance()->getExports();
-
-        return $this->renderTemplate('export/_overview', $variables);
-    }
-
-    public function actionEditExport($exportId = null)
-    {
-        $variables = [];
-
-        if ($exportId) {
-            $variables['export'] = Exports::instance()->getExportById($exportId);
-        } else {
-            $variables['export'] = new ExportModel();
-        }
-
-        $variables['elements'] = Elements::instance()->getElementTypes();
-        $variables['exportTypes'] = [
-            'csv' => 'CSV',
-            'json' => 'JSON',
-        ];
-
-        return $this->renderTemplate('export/_edit', $variables);
-    }
-
-    public function actionEditSettings($exportId = null)
-    {
-        $variables = [];
-
-        if ($exportId) {
-            $export = Exports::instance()->getExportById($exportId);
-            $variables['export'] = $export;
-            $fields = Elements::instance()->getFieldsForElement($export->elementType, $export->elementGroup);
-            $variables['fields'] = $fields;
-
-            return $this->renderTemplate('export/_settings', $variables);
-        } else {
-            return $this->redirect('/admin/export/exports/new');
-        }
-    }
-
-    public function actionExportReady($exportId = null)
-    {
-        $variables = [];
-
-        if ($exportId) {
-            $variables['export'] = Exports::instance()->getExportById($exportId);
-            return $this->renderTemplate('export/_export', $variables);
-        } else {
-            return $this->redirect('/admin/export/exports/new');
-        }
-    }
-
+    // save export (name and main settings)
     public function actionSaveExport()
     {
         $export = $this->_getModelFromPost();
@@ -100,6 +42,7 @@ class ExportController extends Controller
         return $this->_saveAndRedirect($export, 'export/exports/', true, 'settings');
     }
 
+    // save export fields settings
     public function actionSaveSettings()
     {
         $this->requirePostRequest();
@@ -111,10 +54,11 @@ class ExportController extends Controller
         $json = Json::encode($fields);
         $export->settings = $json;
 
-        return $this->_saveAndRedirect($export, 'export/exports/', true, 'export');
+        return $this->_saveAndRedirect($export, 'export/exports/', true, 'run');
 
     }
 
+    // reorder exports on overview
     public function actionReorderExports()
     {
         $this->requirePostRequest();
@@ -127,6 +71,7 @@ class ExportController extends Controller
         return $this->asJson(['success' => true]);
     }
 
+    // delete export on overview
     public function actionDeleteExport()
     {
         $this->requirePostRequest();
@@ -140,6 +85,7 @@ class ExportController extends Controller
         return $this->asJson(['success' => true]);
     }
 
+    // download export
     public function actionDownloadExport($exportId = null)
     {
         if (empty($exportId)) {
@@ -168,6 +114,7 @@ class ExportController extends Controller
         }
     }
 
+    // send mail with export
     public function actionSendExport() {
         if (Craft::$app->request->getBodyParam('emailaddress')) {
             if (!Craft::$app->request->getBodyParam('exportId')) {
@@ -199,6 +146,7 @@ class ExportController extends Controller
 
     }
 
+    // save the export with fields
     private function _saveAndRedirect($export, $redirect, $withId = false, $redirectEdge)
     {
         if (!Exports::instance()->saveExport($export)) {
@@ -220,6 +168,7 @@ class ExportController extends Controller
         return $this->redirect($redirect);
     }
 
+    // fill model with the post fields
     private function _getModelFromPost()
     {
         $this->requirePostRequest();
