@@ -67,6 +67,18 @@
             }) }}
         </div>
 
+        <div class="field">
+            <div class="heading">
+                <label for="limit">{{ 'Limit'|t('export') }}</label>
+            </div>
+            <div class="input ltr">
+                <input type="number" id="limit"
+                       name="fields[filterData][limit]" class="text"
+                       min="0"
+                       value="{{ settings.filterData is defined and settings.filterData.limit is defined ? settings.filterData.limit : '' }}">
+            </div>
+        </div>
+
     {% elseif export.getElementTypeDisplayName() == 'Entry' %}
 
         <div class="inline">
@@ -114,6 +126,18 @@
             }) }}
         </div>
 
+        <div class="field">
+            <div class="heading">
+                <label for="limit">{{ 'Limit'|t('export') }}</label>
+            </div>
+            <div class="input ltr">
+                <input type="number" id="limit"
+                       name="fields[filterData][limit]" class="text"
+                       min="0"
+                       value="{{ settings.filterData is defined and settings.filterData.limit is defined ? settings.filterData.limit : '' }}">
+            </div>
+        </div>
+
     {% elseif export.getElementTypeDisplayName() == 'Category' %}
 
         <div class="inline">
@@ -143,7 +167,6 @@
             </div>
         </div>
 
-
         <div class="field">
             <div class="heading">
                 <label for="filter">{{ 'Filter'|t('export') }}</label>
@@ -157,6 +180,18 @@
                 },
                 values: settings.filterData is defined ? settings.filterData.status : ['enabled', 'disabled'],
             }) }}
+        </div>
+
+        <div class="field">
+            <div class="heading">
+                <label for="limit">{{ 'Limit'|t('export') }}</label>
+            </div>
+            <div class="input ltr">
+                <input type="number" id="limit"
+                       name="fields[filterData][limit]" class="text"
+                       min="0"
+                       value="{{ settings.filterData is defined and settings.filterData.limit is defined ? settings.filterData.limit : '' }}">
+            </div>
         </div>
 
     {% endif %}

@@ -71,6 +71,12 @@ class Download extends Component
         }
 
         if (isset($settings['filterData'])) {
+            // filter on status
+            if (isset($settings['filterData']['status'])) {
+                $elements->status($settings['filterData']['status']);
+            }
+
+            // order elements
             if (isset($settings['filterData']['sortBy'])) {
                 if (isset($settings['filterData']['sortByAsc'])) {
                     $elements->orderBy($settings['filterData']['sortBy'] . ' ' . $settings['filterData']['sortByAsc']);
@@ -78,8 +84,10 @@ class Download extends Component
                     $elements->orderBy($settings['filterData']['sortBy']);
                 }
             }
-            if (isset($settings['filterData']['status'])) {
-                $elements->status($settings['filterData']['status']);
+
+            // limit
+            if (isset($settings['filterData']['limit']) and !empty($settings['filterData']['limit'])) {
+                $elements->limit($settings['filterData']['limit']);
             }
         }
 

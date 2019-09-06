@@ -114,6 +114,23 @@ class ExportController extends Controller
         }
     }
 
+    // Run export task
+    /*public function actionRunExport($exportId) {
+
+        if (!isset($exportId)) {
+            $exportId = Craft::$app->request->getBodyParam('exportId');
+        }
+
+        $export = Exports::instance()->getExportById($exportId);
+
+        $return = Craft::$app->request->getBodyParam('return') ?: 'export';
+
+        $variables['export'] = $export;
+        $variables['job'] = Exports::instance()->runExport($export);
+
+        return $this->redirect($return);
+    }*/
+
     // send mail with export
     public function actionSendExport() {
         if (Craft::$app->request->getBodyParam('emailaddress')) {

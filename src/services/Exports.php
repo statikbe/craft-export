@@ -13,6 +13,7 @@ namespace statikbe\export\services;
 use Craft;
 use craft\base\Component;
 use craft\db\Query;
+use craft\feedme\queue\jobs\ExportJob;
 use craft\helpers\Json;
 use Exception;
 use statikbe\export\Export;
@@ -129,6 +130,21 @@ class Exports extends Component
             ->delete(ExportRecord::tableName(), ['id' => $exportId])
             ->execute();
     }
+
+    /*public function runExport($export)
+    {
+        // Keep track of processed elements here - particularly for paginated feeds
+        $processedElementIds = [];
+
+        // if not using the direct param for this request, do UI stuff
+        Craft::$app->session->setNotice(Craft::t('export', 'Export processing started.'));
+
+        // Create the export task
+        Craft::$app->queue->push(new ExportJob([
+            'export' => $export,
+            'processedElementIds' => $processedElementIds,
+        ]));
+    }*/
 
     private function _getQuery()
     {

@@ -76,7 +76,11 @@ class TemplateController extends Controller
             $fields = Elements::instance()->getFieldsForElement($export->elementType, $export->elementGroup);
             $variables['fields'] = $fields;
 
-            return $this->renderTemplate('export/_settings', $variables);
+            if ($variables['export']) {
+                return $this->renderTemplate('export/_settings', $variables);
+            } else {
+                return $this->redirect('/admin/export/exports/new');
+            }
         } else {
             return $this->redirect('/admin/export/exports/new');
         }
@@ -89,7 +93,11 @@ class TemplateController extends Controller
 
         if ($exportId) {
             $variables['export'] = Exports::instance()->getExportById($exportId);
-            return $this->renderTemplate('export/_run', $variables);
+            if ($variables['export']) {
+                return $this->renderTemplate('export/_run', $variables);
+            } else {
+                return $this->redirect('/admin/export/exports/new');
+            }
         } else {
             return $this->redirect('/admin/export/exports/new');
         }
@@ -102,7 +110,11 @@ class TemplateController extends Controller
 
         if ($exportId) {
             $variables['export'] = Exports::instance()->getExportById($exportId);
-            return $this->renderTemplate('export/_download', $variables);
+            if ($variables['export']) {
+                return $this->renderTemplate('export/_download', $variables);
+            } else {
+                return $this->redirect('/admin/export/exports/new');
+            }
         } else {
             return $this->redirect('/admin/export/exports/new');
         }
