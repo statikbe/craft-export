@@ -10,4 +10,5 @@
     options: craft.export.getSelectOptions(categories),
     value: export.elementGroup[elementType] ?? '',
     required: true,
+    errors: export.getErrors('elementGroup[' ~ elementType ~ ']')
 }) }}

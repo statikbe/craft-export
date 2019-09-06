@@ -37,18 +37,31 @@ class ExportController extends Controller
     // save export (name and main settings)
     public function actionSaveExport()
     {
+        $this->requirePostRequest();
+
         $export = $this->_getModelFromPost();
 
-        return $this->_saveAndRedirect($export, 'export/exports/', true, 'settings');
+        if (!$export->validate()) {
+            $variables['export'] = $export;
+            $variables['errors'] = $export->getErrors();
+            $variables['elements'] = Elements::instance()->getElementTypes();
+            $variables['exportTypes'] = [
+                'csv' => 'CSV',
+                'json' => 'JSON',
+            ];
+
+            return $this->renderTemplate('export/_edit', $variables);
+        } else {
+            return $this->_saveAndRedirect($export, 'export/exports/', true, 'settings');
+        }
     }
 
     // save export fields settings
     public function actionSaveSettings()
     {
         $this->requirePostRequest();
-        $request = Craft::$app->getRequest();
 
-        $export = Exports::instance()->getExportById($request->getBodyParam('exportId'));
+        $export = Exports::instance()->getExportById(Craft::$app->request->getBodyParam('exportId'));
 
         $fields = Craft::$app->request->getBodyParam('fields');
         $json = Json::encode($fields);
@@ -62,9 +75,8 @@ class ExportController extends Controller
     public function actionReorderExports()
     {
         $this->requirePostRequest();
-        $this->requireAcceptsJson();
 
-        $exportIds = Json::decode(Craft::$app->getRequest()->getRequiredBodyParam('ids'));
+        $exportIds = Json::decode(Craft::$app->request->getRequiredBodyParam('ids'));
         $exportIds = array_filter($exportIds);
         Exports::instance()->reorderExports($exportIds);
 
@@ -76,9 +88,7 @@ class ExportController extends Controller
     {
         $this->requirePostRequest();
 
-        $request = Craft::$app->getRequest();
-
-        $exportId = $request->getRequiredBodyParam('id');
+        $exportId = Craft::$app->request->getRequiredBodyParam('id');
 
         Exports::instance()->deleteExportById($exportId);
 
@@ -191,51 +201,26 @@ class ExportController extends Controller
     {
         $this->requirePostRequest();
 
-        $request = Craft::$app->getRequest();
-
-        if ($request->getBodyParam('exportId')) {
-            $export = Exports::instance()->getExportById($request->getBodyParam('exportId'));
+        if (Craft::$app->request->getBodyParam('exportId')) {
+            $export = Exports::instance()->getExportById(Craft::$app->request->getBodyParam('exportId'));
         } else {
             $export = new ExportModel();
         }
 
-        $export->name = $request->getBodyParam('name', $export->name);
+        $export->name = Craft::$app->request->getBodyParam('name', $export->name);
+
 
         //slugify the filename so there won't be special characters and spaces
-        $fileName = $request->getBodyParam('filename', $export->name);
+        $fileName = Craft::$app->request->getBodyParam('filename', '');
         $slugify = new Slugify();
         $fileNameAsSlug = $slugify->slugify($fileName);
         $export->filename = $fileNameAsSlug;
 
         // file the model with the body fields
-        $export->exportType = $request->getBodyParam('exportType', $export->exportType);
-        $export->elementType = $request->getBodyParam('elementType', $export->elementType);
-        $export->elementGroup = $request->getBodyParam('elementGroup', $export->elementGroup);
-        $export->siteId = $request->getBodyParam('siteId', $export->siteId);
-
-
-        // Check conditionally on Element Group fields - depending on the Element Type selected
-        if (isset($export->elementGroup[$export->elementType])) {
-            $elementGroup = $export->elementGroup[$export->elementType];
-
-            if ($export->elementType == 'craft\elements\Category') {
-                if (empty($elementGroup)) {
-                    $export->addError('elementGroup', Craft::t('export', 'Category Group is required'));
-                }
-            }
-
-            if ($export->elementType == 'craft\elements\Entry') {
-                if (empty($elementGroup['section']) || empty($elementGroup['entryType'])) {
-                    $export->addError('elementGroup', Craft::t('export', 'Entry Section and Type are required'));
-                }
-            }
-
-            if ($export->elementType == 'craft\elements\User') {
-                if (empty($elementGroup)) {
-                    $export->addError('elementGroup', Craft::t('export', 'User Group is required'));
-                }
-            }
-        }
+        $export->exportType = Craft::$app->request->getBodyParam('exportType', $export->exportType);
+        $export->elementType = Craft::$app->request->getBodyParam('elementType', $export->elementType);
+        $export->elementGroup = Craft::$app->request->getBodyParam('elementGroup', $export->elementGroup);
+        $export->siteId = Craft::$app->request->getBodyParam('siteId', $export->siteId);
 
         return $export;
     }

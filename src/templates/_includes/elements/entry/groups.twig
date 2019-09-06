@@ -38,6 +38,7 @@
         options: craft.export.getSelectOptions(sections),
         value: sectionId ?? '',
         required: true,
+        errors: export.getErrors('elementGroup[' ~ elementType ~ '][section]')
     }) }}
 
     {{ forms.selectField({
@@ -49,5 +50,6 @@
         options: craft.export.getSelectOptions(sectionEntryTypes),
         value: entryTypeId ?? '',
         required: true,
+        errors: export.getErrors('elementGroup[' ~ elementType ~ '][entryType]')
     }) }}
 </div>

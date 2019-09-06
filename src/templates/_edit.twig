@@ -38,6 +38,12 @@
         required: true,
     }) }}
 
+    {% if not export.id or not export.filename|length %}
+        {% js %}
+            new Craft.HandleGenerator('#name', '#filename');
+        {% endjs %}
+    {% endif %}
+
     <hr>
 
     {% set elementsList = [] %}
@@ -78,6 +84,8 @@
             options: sites,
             value: export.siteId,
         }) }}
+    {% else %}
+        <input type="hidden" name="siteId" id="siteId" value="1">
     {% endif %}
 
     {{ forms.selectField({

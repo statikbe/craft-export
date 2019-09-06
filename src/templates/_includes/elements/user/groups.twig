@@ -10,4 +10,5 @@
     options: craft.export.getSelectOptions(usergroups),
     value: export.elementGroup[elementType] ?? '',
     required: true,
+    errors: export.getErrors('elementGroup[' ~ elementType ~ ']')
 }) }}

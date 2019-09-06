@@ -59,13 +59,40 @@ class ExportModel extends Model
     public function rules()
     {
         return [
-            [['name', 'elementType', 'siteId'], 'required'],
+            [['name', 'filename', 'elementType', 'elementGroup', 'siteId'], 'required'],
+            ['elementType', 'validateElementSelection']
         ];
+    }
+
+    public function validateElementSelection()
+    {
+        // Check conditionally on Element Group fields - depending on the Element Type selected
+        if ($this->elementType == 'craft\elements\Category') {
+            if (empty($this->elementGroup[$this->elementType])) {
+                $this->addError('elementGroup[' . $this->elementType . ']', Craft::t('export', 'Category Group is required'));
+            }
+        }
+
+        if ($this->elementType == 'craft\elements\Entry') {
+            if (empty($this->elementGroup[$this->elementType]['section'])) {
+                $this->addError('elementGroup[' . $this->elementType . '][section]', Craft::t('export', 'Section is required'));
+            }
+            if (empty($this->elementGroup[$this->elementType]['entryType'])) {
+                $this->addError('elementGroup[' . $this->elementType . '][entryType]', Craft::t('export', 'Entry Type is required'));
+            }
+        }
+
+        if ($this->elementType == 'craft\elements\User') {
+            if (empty($this->elementGroup[$this->elementType])) {
+                $this->addError('elementGroup[' . $this->elementType . ']', Craft::t('export', 'User Group is required'));
+            }
+        }
+
     }
 
     public function getElementColumnTemplate()
     {
-        return "export/_includes/elements/" . strtolower($this->getElementTypeDisplayName())  . "/column";
+        return "export/_includes/elements/" . strtolower($this->getElementTypeDisplayName()) . "/column";
     }
 
     public function getElementTypeDisplayName()
