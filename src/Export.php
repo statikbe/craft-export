@@ -12,7 +12,6 @@ namespace statikbe\export;
 
 use craft\helpers\UrlHelper;
 use craft\web\twig\variables\CraftVariable;
-use statikbe\export\services\ExportService as ExportServiceService;
 
 use Craft;
 use craft\base\Plugin;
@@ -38,7 +37,6 @@ use yii\base\Event;
  * @package   Export
  * @since     1.0.0
  *
- * @property  ExportServiceService $exportService
  */
 class Export extends Plugin
 {

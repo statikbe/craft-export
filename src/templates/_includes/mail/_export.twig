@@ -1,1 +1,56 @@
-<p>Uw export in bijlage</p>
+{% do view.registerAssetBundle("statikbe\\export\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+<html>
+<head>
+    <title>{{ systemName }}</title>
+    <style>
+        img {
+            display: block;
+        }
+        ul {
+            list-style:none;
+            padding: 0;
+            margin: 0;
+        }
+        li + li {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0" offset="0" bgcolor="#f7f6f4">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f7f7f7" style="padding: 40px 0;">
+    <tr>
+        <td valign="top" align="center">
+            <table width="580" border="0" cellpadding="20" cellspacing="0" bgcolor="#ffffff" style="background: #ffffff; background-color: #ffffff;">
+                <tr style="font-family: Arial, sans-serif; font-size: 16px; line-height: 30px; color: #333333; padding-top:20px">
+                    <td width="33%" style="padding-bottom: 20px;">
+                        <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'icon.svg') }}" alt="Logo Export Plugin" title="Logo" border="0" style="max-width: 50px; display: block; border: none;" />
+                    </td>
+                    <td style="vertical-align: middle; padding-bottom: 20px;">
+                        <h2 style="margin: 0; padding: 0;">{{ 'Your export in attachment'|t('export') }}</h2>
+                    </td>
+                </tr>
+            </table>
+            <table width="580" border="0" cellpadding="20" cellspacing="0" bgcolor="#ffffff" style="background: #ffffff; background-color: #ffffff;">
+                <tr width="580" align="left" valign="top" style="font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #999999;">
+                    <td style="padding:1px 0; background: #f7f7f7"></td>
+                </tr>
+                <tr style="font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #333333; padding-top:20px">
+                    <td>
+                        <p>{{ 'Thank you for using the export plugin. You can find your personal export in the attachement'|t('export') }}</p>
+                        <p><small>{{ 'You received this email because someone filled in this e-mail address in the {systemName} Control Panel.'|t('export', {'systemName': systemName}) }}</small></p>
+                    </td>
+                </tr>
+                <tr width="580" align="left" valign="top" style="font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #999999;">
+                    <td style="padding:1px 0; background: #f7f7f7"></td>
+                </tr>
+                <tr>
+                    <td width="580" align="left" valign="top" style="font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #999999;"><p style="font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; color: #999999;">&copy; <a href="https://github.com/statikbe/craft-export" target="_blank" style="color: #666666; text-decoration: underline">Export</a> brought to you by
+                            <a href="https://www.statik.be" style="color: #666666; text-decoration: underline" target="_blank">Statik</a></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

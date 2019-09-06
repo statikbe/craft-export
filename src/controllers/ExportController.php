@@ -156,6 +156,7 @@ class ExportController extends Controller
                 $file = $path . $fileName;
                 Mail::instance()->sendMail($mail, $file);
             }
+            Craft::$app->session->setNotice(Craft::t('export', 'Export send.'));
         } else {
             Craft::$app->session->setError(Craft::t('export', 'Unable to send mail: no e-mail address filled in.'));
             return null;
