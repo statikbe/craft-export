@@ -1,0 +1,53 @@
+{% import '_includes/forms' as forms %}
+
+{% set sections = element.groups %}
+
+{% set sectionEntryTypes = [] %}
+
+{# Create a section-indexed array of element types #}
+{% set entryTypes = [] %}
+{% for section in sections %}
+    {% set options = craft.export.getSelectOptions(section.getEntryTypes()) %}
+    {% set entryTypes = entryTypes|merge({ ('item_' ~ section.id): options }) %}
+{% endfor %}
+
+{% set sectionId = null %}
+{% set entryTypeId = null %}
+
+{% if export.elementGroup[elementType] is defined %}
+    {% set sectionId = export.elementGroup[elementType].section ?? null %}
+    {% set entryTypeId = export.elementGroup[elementType].entryType ?? null %}
+{% endif %}
+
+{% if sectionId %}
+    {% set section = craft.app.sections.getSectionById(sectionId) %}
+    {% if section %}
+        {% set sectionEntryTypes = section.getEntryTypes() %}
+    {% endif %}
+{% elseif sections[0] is defined %}
+    {% set sectionEntryTypes = sections[0].getEntryTypes() ?? null %}
+{% endif %}
+
+<div class="element-sub-group" data-items="{{ entryTypes|json_encode }}">
+    {{ forms.selectField({
+        label: "Section" | t('export'),
+        instructions: 'Choose the Section you want to export.'|t('export'),
+        class: 'element-parent-group',
+        id: 'elementGroup-' ~ elementType ~ '-section',
+        name: 'elementGroup[' ~ elementType ~ '][section]',
+        options: craft.export.getSelectOptions(sections),
+        value: sectionId ?? '',
+        required: true,
+    }) }}
+
+    {{ forms.selectField({
+        label: "Entry Type"|t('export'),
+        instructions: 'Choose the Entry Type you want to save your export data into.'|t('export'),
+        class: 'element-child-group',
+        id: 'elementGroup-' ~ elementType ~ '-entryType',
+        name: 'elementGroup[' ~ elementType ~ '][entryType]',
+        options: craft.export.getSelectOptions(sectionEntryTypes),
+        value: entryTypeId ?? '',
+        required: true,
+    }) }}
+</div>

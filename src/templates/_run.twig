@@ -1,0 +1,64 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("statikbe\\export\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{% set crumbs = [
+    { label: 'Export', url: url('export/exports') },
+    { label: export.name, url: url('export/exports/' ~ export.id) },
+    { label: 'Settings', url: url('export/exports/' ~ export.id ~ '/settings') },
+] %}
+
+{% set title = 'Run your export'|t('export') %}
+
+{% block content %}
+
+    <div class="fullwidth flex flex-space-around">
+        <div class="halfwidth border-right">
+            <div class="container--center">
+                <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'female-office-worker.png') }}"
+                     alt="Construction worker">
+            </div>
+            <h2>{{ 'Download export'|t('export') }}</h2>
+            <p>{{ 'Run your export and download the file. If you have many elements to export, this might take a minute.'|t('export') }}</p>
+            <a class="btn submit" href="{{ actionUrl('export/export/download-export', {'exportId': export.id}) }}">{{ 'Download'|t('export') }} {{ export.filename ~ '.' ~ export.exportType }}</a>
+        </div>
+        <div class="halfwidth">
+            <div class="container--center">
+                <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'female-technologist.png') }}"
+                     alt="Construction worker">
+            </div>
+            <h2>{{ 'Send export to e-mail address'|t('export') }}</h2>
+
+            <form method="post">
+                {{ csrfInput() }}
+                <input type="hidden" name="action" value="export/export/send-export">
+                <input type="hidden" name="exportId" value="{{ export.id }}">
+
+                {{ forms.textField({
+                    first: true,
+                    label: "E-mail Address"|t('export'),
+                    id: 'emailaddress',
+                    name: 'emailaddress',
+                    errors: export.getErrors('emailaddress'),
+                    required: true,
+                }) }}
+
+                <input type="submit" class="btn submit" value="{{ 'Send'|t('export') }}">
+            </form>
+
+        </div>
+    </div>
+
+    {# TODO: create a task and run in backgound #}
+    {# TODO: show loader (see Feed Me) #}
+    {#<div class="container--center">
+        <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'female-office-worker.png') }}"
+             alt="Construction worker">
+        <h1>{{ "Your export is ready to run"|t('export') }}</h1>
+        <p>{{ 'Click the button below to run your export. This page will reload showing progress.'|t('export') }}</p>
+        <a class="btn submit" href="{{ actionUrl('export/export/download-export', {'exportId': export.id, 'return': craft.app.request.getUrl() }) }}">{{ 'Run your export'|t('export') }}</a>
+    </div>#}
+
+{% endblock %}

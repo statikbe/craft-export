@@ -1,0 +1,88 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("statikbe\\export\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{# The title of this CP section #}
+{% set title = "Export" %}
+
+{# The URL to this plugin's base CP section #}
+{% set pluginCpUrl = url('export') %}
+
+{% block actionButton %}
+    <div id="button-container">
+        <div class="btngroup submit">
+            <a class="btn submit add icon" href="/admin/export/exports/new">
+                {{ 'New export'|t('export') }}
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{# The content of the CP Section#}
+{% set content %}
+    {% if exports | length %}
+        <table id="exports" class="data fullwidth collapsible table-export">
+            <thead>
+            <tr>
+                <th scope="col">{{ "Name"|t('export') }}</th>
+                <th scope="col">{{ "Filename"|t('export') }}</th>
+                <th scope="col">{{ "Export Type"|t('export') }}</th>
+                <th scope="col">{{ "Element Type"|t('export') }}</th>
+                <th scope="col">{{ "Element Group"|t('export') }}</th>
+                <th class="thin" colspan="3"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for export in exports %}
+                <tr data-id="{{ export.id }}" data-name="{{ export.name }}">
+                    <th scope="row" data-title="Name">
+                        <a href="{{ url('export/exports/' ~ export.id) }}">{{ export.name }}</a>
+                    </th>
+
+                    <td>{{ export.filename ~ '.' ~ export.exportType|lower }}</td>
+
+                    <td>{{ export.exportType|upper }}</td>
+
+                    <td>
+                        <span>{{ export.getElementTypeDisplayName() }}</span>
+                    </td>
+
+                    <td>
+                        {% include export.getElementColumnTemplate() ignore missing with { elementType: export.elementType } %}
+                    </td>
+
+                    <td><a href="{{ actionUrl('export/export/download-export', {'exportId': export.id}) }}">{{ 'Download export'|t('export') }}</a></td>
+
+                    <td class="thin action">
+                        <a class="move icon" title="{{ 'Reorder'|t('export') }}" role="button"></a>
+                    </td>
+
+                    <td class="thin action">
+                        <a class="delete icon" title="{{ 'Delete'|t('export') }}" role="button"></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="container--center">
+            <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'shrug.png') }}" alt="Worried">
+            <h1>{{ 'Oh no! No exports found.'|t('export') }}</h1>
+        </div>
+    {% endif %}
+
+{% endset %}
+
+
+{% js %}
+    var adminTable = new Craft.AdminTable({
+    tableSelector: '#exports',
+    sortable: true,
+    reorderAction: 'export/export/reorder-exports',
+    deleteAction: 'export/export/delete-export',
+    confirmDeleteMessage: '{{ "Are you sure you want to delete “{name}”?"|t('export') }}'
+    });
+{% endjs %}
+

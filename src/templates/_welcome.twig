@@ -1,0 +1,34 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("statikbe\\export\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{# The title of this CP section #}
+{% set title = "Export" %}
+
+{# The URL to this plugin's base CP section #}
+{% set pluginCpUrl = url('export') %}
+
+{% block actionButton %}
+    <div id="button-container">
+        <div class="btngroup submit">
+            <a class="btn submit add icon" href="/admin/export/exports/new">
+                {{ 'New export'|t('export') }}
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{# The content of the CP Section#}
+{% set content %}
+
+    <div class="container--center">
+        <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'happy-person-wave-hand.png') }}"
+             alt="Happy person">
+        <h1>{{ 'Hi there!'|t('export') }}</h1>
+        <p>{{ 'Welcome to our export plugin. Create your first export by clicking on'|t('export') }} <a href="/admin/export/exports/new">{{ 'New Export'|t('export') }}</a>.</p>
+        <p>{{ 'Credits by'|t('export') }} <a href="https://statik.be" target="_blank">Statik</a>.</p>
+    </div>
+
+{% endset %}

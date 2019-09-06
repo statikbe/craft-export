@@ -1,0 +1,93 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("statikbe\\export\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{% set crumbs = [
+    { label: 'Export', url: url('export/exports') },
+] %}
+
+{% set title = (export.id) ? export.name : 'Create a new export' | t('export') %}
+{% set fullPageForm = true %}
+
+{% block content %}
+    <input type="hidden" name="action" value="export/export/save-export">
+
+    {% if export.id %}<input type="hidden" name="exportId" value="{{ export.id }}">{% endif %}
+
+    {{ forms.textField({
+        first: true,
+        label: "Name" | t('export'),
+        instructions: "What this export will be called in the CP." | t('export'),
+        id: 'name',
+        name: 'name',
+        value: export.name,
+        errors: export.getErrors('name'),
+        autofocus: true,
+        required: true,
+    }) }}
+
+    {{ forms.textField({
+        label: "Filename"|t('export'),
+        instructions: "What should be the filename of the export without extension."|t('export'),
+        id: 'filename',
+        name: 'filename',
+        value: export.filename,
+        errors: export.getErrors('filename'),
+        required: true,
+    }) }}
+
+    <hr>
+
+    {% set elementsList = [] %}
+    {% for elementClass, element in elements %}
+        {% set elementsList = elementsList | merge({ (elementClass): element.name }) %}
+    {% endfor %}
+
+    {{ forms.selectField({
+        label: "Element Type"|t('export'),
+        instructions: 'Choose what element you want to export.'|t('export'),
+        id: 'elementType',
+        name: 'elementType',
+        options: [{ label: 'Select', value: '' }]|merge(elementsList),
+        value: export.elementType,
+        errors: export.getErrors('elementType'),
+        required: true,
+    }) }}
+
+    {% for elementClass, element in elements %}
+        <div class="element-select" data-type="{{ elementClass | replace('\\', '-') }}">
+            {% set elementType = elementClass %}
+            {% include element.groupsTemplate ignore missing %}
+        </div>
+    {% endfor %}
+
+    {% if craft.app.isMultiSite() %}
+        {% set sites = [{ label: 'Primary Site ({name})'|t('export', {name: craft.app.sites.primarySite.name}), value: craft.app.sites.primarySite.id }] %}
+
+        {% for site in craft.app.sites.getAllSites() %}
+            {% set sites = sites | merge([{ label: site.name, value: site.id }]) %}
+        {% endfor %}
+
+        {{ forms.selectField({
+            label: "Target Site"|t('export'),
+            instructions: 'Choose which site you want to export your elements from.'|t('export'),
+            id: 'siteId',
+            name: 'siteId',
+            options: sites,
+            value: export.siteId,
+        }) }}
+    {% endif %}
+
+    {{ forms.selectField({
+        label: "Export Type"|t('export'),
+        instructions: 'Choose the output of your export.'|t('export'),
+        id: 'exportType',
+        name: 'exportType',
+        options: exportTypes,
+        value: export.exportType,
+        errors: export.getErrors('exportType')
+    }) }}
+
+{% endblock %}

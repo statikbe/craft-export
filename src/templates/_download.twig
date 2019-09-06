@@ -1,0 +1,25 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{# {% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("statikbe\\export\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{% set crumbs = [
+    { label: 'Export', url: url('export/exports') },
+    { label: export.name, url: url('export/exports/' ~ export.id) },
+    { label: 'Settings', url: url('export/exports/' ~ export.id ~ '/settings') },
+    { label: 'Run', url: url('export/exports/' ~ export.id ~ '/run') },
+] %}
+
+{% set title = 'Download your export'|t('export') %}
+
+{% block content %}
+
+    <div class="container--center">
+        <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'woman-tipping-hand.png') }}"
+             alt="Happy person">
+        <h1>{{ "Your export is ready to download!"|t('export') }}</h1>
+        <a href="#" class="btn submit">{{ 'Download'|t('export') }} {{ export.name }}</a>
+    </div>
+
+{% endblock %} #}

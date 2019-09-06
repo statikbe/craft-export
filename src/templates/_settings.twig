@@ -1,0 +1,384 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("statikbe\\export\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{% set crumbs = [
+    { label: 'Export', url: url('export/exports') },
+    { label: export.name, url: url('export/exports/' ~ export.id) },
+] %}
+
+{% set title = 'Settings'|t('export') %}
+{% set fullPageForm = true %}
+
+{% block content %}
+
+    {% set settings = export.settings|json_decode %}
+
+    <input type="hidden" name="action" value="export/export/save-settings">
+    <input type="hidden" name="exportId" value="{{ export.id }}">
+
+    <h2>{{ 'Give settings to your export'|t('export') }}</h2>
+
+    {% if export.getElementTypeDisplayName() == 'User' %}
+
+        <div class="inline">
+            <div class="inline__item">
+                {{ forms.selectField({
+                    label: 'Sort data by'|t('export'),
+                    id: 'sortBy',
+                    name: 'fields[filterData][sortBy]',
+                    options: {
+                        'id': 'ID',
+                        'dateCreated': 'Date Created',
+                        'email' : 'E-mail Address'
+                    },
+                    value: settings.filterData is defined ? settings.filterData.sortBy : 'id',
+                }) }}
+            </div>
+            <div class="inline__item">
+                {{ forms.selectField({
+                    id: 'sortByAsc',
+                    name: 'fields[filterData][sortByAsc]',
+                    options: {
+                        'asc': 'Ascending',
+                        'desc': 'Descending'
+                    },
+                    value: settings.filterData is defined and settings.filterData.sortByAsc is defined ? settings.filterData.sortByAsc : 'asc',
+                }) }}
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="heading">
+                <label for="filter">{{ 'Filter'|t('export') }}</label>
+            </div>
+            {{ forms.checkboxGroup({
+                id: 'filter',
+                name: 'fields[filterData][status]',
+                options: {
+                    'active': ' &nbsp; <span class="status active"></span>Active',
+                    'pending': ' &nbsp; <span class="status pending"></span>Pending',
+                    'suspended': ' &nbsp; <span class="status suspended"></span>Suspended',
+                    'locked': ' &nbsp; <span class="status locked"></span>Locked'
+                },
+                values: settings.filterData is defined ? settings.filterData.status : ['active', 'pending'],
+            }) }}
+        </div>
+
+        <div class="field">
+            <div class="heading">
+                <label for="limit">{{ 'Limit'|t('export') }}</label>
+            </div>
+            <div class="input ltr">
+                <input type="number" id="limit"
+                       name="fields[filterData][limit]" class="text"
+                       min="0"
+                       value="{{ settings.filterData is defined and settings.filterData.limit is defined ? settings.filterData.limit : '' }}">
+            </div>
+        </div>
+
+    {% elseif export.getElementTypeDisplayName() == 'Entry' %}
+
+        <div class="inline">
+            <div class="inline__item">
+                {{ forms.selectField({
+                    label: 'Sort data by'|t('export'),
+                    id: 'sortBy',
+                    name: 'fields[filterData][sortBy]',
+                    options: {
+                        'id': 'ID',
+                        'title': 'Title',
+                        'postDate': 'Post Date',
+                        'dateCreated': 'Date Created'
+                    },
+                    value: settings.filterData is defined and settings.filterData.sortBy ? settings.filterData.sortBy : 'id',
+                }) }}
+            </div>
+            <div class="inline__item">
+                {{ forms.selectField({
+                    id: 'sortByAsc',
+                    name: 'fields[filterData][sortByAsc]',
+                    options: {
+                        'asc': 'Ascending',
+                        'desc': 'Descending'
+                    },
+                    value: settings.filterData is defined and settings.filterData.sortByAsc is defined ? settings.filterData.sortByAsc : 'asc',
+                }) }}
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="heading">
+                <label for="filter">{{ 'Filter'|t('export') }}</label>
+            </div>
+            {{ forms.checkboxGroup({
+                id: 'filter',
+                name: 'fields[filterData][status]',
+                options: {
+                    'live': ' &nbsp; <span class="status live"></span>Live',
+                    'pending': ' &nbsp; <span class="status pending"></span>Pending',
+                    'expired': ' &nbsp; <span class="status expired"></span>Expired',
+                    'disabled': ' &nbsp; <span class="status disabled"></span>Disabled'
+                },
+                values: settings.filterData is defined ? settings.filterData.status : ['live', 'pending']
+            }) }}
+        </div>
+
+        <div class="field">
+            <div class="heading">
+                <label for="limit">{{ 'Limit'|t('export') }}</label>
+            </div>
+            <div class="input ltr">
+                <input type="number" id="limit"
+                       name="fields[filterData][limit]" class="text"
+                       min="0"
+                       value="{{ settings.filterData is defined and settings.filterData.limit is defined ? settings.filterData.limit : '' }}">
+            </div>
+        </div>
+
+    {% elseif export.getElementTypeDisplayName() == 'Category' %}
+
+        <div class="inline">
+            <div class="inline__item">
+                {{ forms.selectField({
+                    label: 'Sort data by'|t('export'),
+                    id: 'sortBy',
+                    name: 'fields[filterData][sortBy]',
+                    options: {
+                        'id': 'ID',
+                        'title': 'Title',
+                        'dateCreated': 'Date Created'
+                    },
+                    value: settings.filterData is defined ? settings.filterData.sortBy : 'id',
+                }) }}
+            </div>
+            <div class="inline__item">
+                {{ forms.selectField({
+                    id: 'sortByAsc',
+                    name: 'fields[filterData][sortByAsc]',
+                    options: {
+                        'asc': 'Ascending',
+                        'desc': 'Descending'
+                    },
+                    value: settings.filterData is defined and settings.filterData.sortByAsc is defined ? settings.filterData.sortByAsc : 'asc',
+                }) }}
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="heading">
+                <label for="filter">{{ 'Filter'|t('export') }}</label>
+            </div>
+            {{ forms.checkboxGroup({
+                id: 'filter',
+                name: 'fields[filterData][status]',
+                options: {
+                    'enabled': ' &nbsp; <span class="status enabled"></span>Enabled',
+                    'disabled': ' &nbsp; <span class="status disabled"></span>Disabled',
+                },
+                values: settings.filterData is defined ? settings.filterData.status : ['enabled', 'disabled'],
+            }) }}
+        </div>
+
+        <div class="field">
+            <div class="heading">
+                <label for="limit">{{ 'Limit'|t('export') }}</label>
+            </div>
+            <div class="input ltr">
+                <input type="number" id="limit"
+                       name="fields[filterData][limit]" class="text"
+                       min="0"
+                       value="{{ settings.filterData is defined and settings.filterData.limit is defined ? settings.filterData.limit : '' }}">
+            </div>
+        </div>
+
+    {% endif %}
+
+    <br>
+
+    <h2>{{ 'Which fields do you want to include in the export?'|t('export') }}</h2>
+    <br>
+
+    <div class="width-60">
+        <table class="data fullwidth collapsible">
+            <tbody>
+            <tr>
+                <th colspan="3"><h4 class="pt-10 pb-10">{{ "Basic fields"|t('export') }}</h4></th>
+            </tr>
+            <tr>
+                <td>
+                    {{ forms.checkboxField({
+                        id: 'id',
+                        name: 'fields[elementData][id]',
+                        checked: settings.elementData.id is defined ? (settings.elementData.id == 1 ? true : false) : true,
+                    }) }}
+                </td>
+                <td><label for="id">{{ 'ID'|t('export') }}</label></td>
+                <td class="light">{{ 'Number'|t('export') }}</td>
+            </tr>
+            {% if export.getElementTypeDisplayName() == 'User' %}
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'email',
+                            name: 'fields[elementData][email]',
+                            checked: settings.elementData.email is defined ? (settings.elementData.email == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="email">{{ 'E-mail Address'|t('export') }}</label></td>
+                    <td class="light">{{ 'E-mail'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'firstName',
+                            name: 'fields[elementData][firstName]',
+                            checked: settings.elementData.firstName is defined ? (settings.elementData.firstName == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="firstName">{{ 'First Name'|t('export') }}</label></td>
+                    <td class="light">{{ 'Plain Text'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'lastName',
+                            name: 'fields[elementData][lastName]',
+                            checked: settings.elementData.lastName is defined ? (settings.elementData.lastName == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="lastName">{{ 'Last Name'|t('export') }}</label></td>
+                    <td class="light">{{ 'Plain Text'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'status',
+                            name: 'fields[elementData][status]',
+                            checked: settings.elementData.status is defined ? (settings.elementData.status == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="status">{{ 'Status'|t('export') }}</label></td>
+                    <td class="light">{{ 'Dropdown'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'dateCreated',
+                            name: 'fields[elementData][dateCreated]',
+                            checked: settings.elementData.dateCreated is defined ? (settings.elementData.dateCreated == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="dateCreated">{{ 'Date Created'|t('export') }}</label></td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'dateUpdated',
+                            name: 'fields[elementData][dateUpdated]',
+                            checked: settings.elementData.dateUpdated is defined ? (settings.elementData.dateUpdated == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="dateUpdated">{{ 'Date Updated'|t('export') }}</label></td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'lastLoginDate',
+                            name: 'fields[elementData][lastLoginDate]',
+                            checked: settings.elementData.lastLoginDate is defined ? (settings.elementData.lastLoginDate == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="lastLoginDate">{{ 'Last Login Date'|t('export') }}</label></td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
+                </tr>
+            {% elseif export.getElementTypeDisplayName() == 'Category' or export.getElementTypeDisplayName() == 'Entry' %}
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'title',
+                            name: 'fields[elementData][title]',
+                            checked: settings.elementData.title is defined ? (settings.elementData.title == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="title">{{ 'Title'|t('export') }}</label></td>
+                    <td class="light">{{ 'Plain Text'|t('export') }}</td>
+                </tr>
+                {% if export.getElementTypeDisplayName() == 'Entry' %}
+                    <tr>
+                        <td>
+                            {{ forms.checkboxField({
+                                id: 'author',
+                                name: 'fields[elementData][author]',
+                                checked: settings.elementData.author is defined ? (settings.elementData.author == 1 ? true : false) : true,
+                            }) }}
+                        </td>
+                        <td><label for="author">{{ 'Author'|t('export') }}</label></td>
+                        <td class="light">{{ 'E-mail'|t('export') }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ forms.checkboxField({
+                                id: 'postDate',
+                                name: 'fields[elementData][postDate]',
+                                checked: settings.elementData.postDate is defined ? (settings.elementData.postDate == 1 ? true : false) : true,
+                            }) }}
+                        </td>
+                        <td><label for="postDate">{{ 'Post Date'|t('export') }}</label></td>
+                        <td class="light">{{ 'Date/Time'|t('export') }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'dateCreated',
+                            name: 'fields[elementData][dateCreated]',
+                            checked: settings.elementData.dateCreated is defined ? (settings.elementData.dateCreated == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="dateCreated">{{ 'Date Created'|t('export') }}</label></td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'dateUpdated',
+                            name: 'fields[elementData][dateUpdated]',
+                            checked: settings.elementData.dateUpdated is defined ? (settings.elementData.dateUpdated == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="dateUpdated">{{ 'Date Updated'|t('export') }}</label></td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
+                </tr>
+            {% endif %}
+
+
+            {% if fields|length %}
+                <tr>
+                    <th colspan="3"><h4 class="pt-10 pb-10">{{ "Custom fields"|t('export') }}</h4></th>
+                </tr>
+
+                {% for field in fields %}
+                    <tr>
+                        <td>
+                            {{ forms.checkboxField({
+                                id: field.handle,
+                                name: 'fields[customData][' ~ field.handle ~ ']',
+                                errors: export.getErrors(field.handle),
+                                checked: settings.customData[field.handle] is defined ? (settings.customData[field.handle] == 1 ? true : false) : true,
+                            }) }}
+                        </td>
+                        <td><label for="{{ field.handle }}">{{ field.name }}</label></td>
+                        <td class="light">{{ field.displayName() }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
