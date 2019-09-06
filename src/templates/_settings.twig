@@ -58,10 +58,10 @@
                 id: 'filter',
                 name: 'fields[filterData][status]',
                 options: {
-                    'active': 'Active',
-                    'pending': 'Pending',
-                    'suspended': 'Suspended',
-                    'locked': 'Locked'
+                    'active': ' &nbsp; <span class="status active"></span>Active',
+                    'pending': ' &nbsp; <span class="status pending"></span>Pending',
+                    'suspended': ' &nbsp; <span class="status suspended"></span>Suspended',
+                    'locked': ' &nbsp; <span class="status locked"></span>Locked'
                 },
                 values: settings.filterData is defined ? settings.filterData.status : ['active', 'pending'],
             }) }}
@@ -117,10 +117,10 @@
                 id: 'filter',
                 name: 'fields[filterData][status]',
                 options: {
-                    'live': 'Live',
-                    'pending': 'Pending',
-                    'expired': 'Expired',
-                    'disabled': 'Disabled'
+                    'live': ' &nbsp; <span class="status live"></span>Live',
+                    'pending': ' &nbsp; <span class="status pending"></span>Pending',
+                    'expired': ' &nbsp; <span class="status expired"></span>Expired',
+                    'disabled': ' &nbsp; <span class="status disabled"></span>Disabled'
                 },
                 values: settings.filterData is defined ? settings.filterData.status : ['live', 'pending']
             }) }}
@@ -175,8 +175,8 @@
                 id: 'filter',
                 name: 'fields[filterData][status]',
                 options: {
-                    'enabled': 'Enabled',
-                    'disabled': 'Disabled',
+                    'enabled': ' &nbsp; <span class="status enabled"></span>Enabled',
+                    'disabled': ' &nbsp; <span class="status disabled"></span>Disabled',
                 },
                 values: settings.filterData is defined ? settings.filterData.status : ['enabled', 'disabled'],
             }) }}
@@ -195,7 +195,6 @@
         </div>
 
     {% endif %}
-
 
     <br>
 
@@ -216,7 +215,7 @@
                         checked: settings.elementData.id is defined ? (settings.elementData.id == 1 ? true : false) : true,
                     }) }}
                 </td>
-                <td>{{ 'ID'|t('export') }}</td>
+                <td><label for="id">{{ 'ID'|t('export') }}</label></td>
                 <td class="light">{{ 'Number'|t('export') }}</td>
             </tr>
             {% if export.getElementTypeDisplayName() == 'User' %}
@@ -228,7 +227,7 @@
                             checked: settings.elementData.email is defined ? (settings.elementData.email == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'E-mail Address'|t('export') }}</td>
+                    <td><label for="email">{{ 'E-mail Address'|t('export') }}</label></td>
                     <td class="light">{{ 'E-mail'|t('export') }}</td>
                 </tr>
                 <tr>
@@ -239,7 +238,7 @@
                             checked: settings.elementData.firstName is defined ? (settings.elementData.firstName == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'First Name'|t('export') }}</td>
+                    <td><label for="firstName">{{ 'First Name'|t('export') }}</label></td>
                     <td class="light">{{ 'Plain Text'|t('export') }}</td>
                 </tr>
                 <tr>
@@ -250,7 +249,7 @@
                             checked: settings.elementData.lastName is defined ? (settings.elementData.lastName == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'Last Name'|t('export') }}</td>
+                    <td><label for="lastName">{{ 'Last Name'|t('export') }}</label></td>
                     <td class="light">{{ 'Plain Text'|t('export') }}</td>
                 </tr>
                 <tr>
@@ -261,7 +260,7 @@
                             checked: settings.elementData.status is defined ? (settings.elementData.status == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'Status'|t('export') }}</td>
+                    <td><label for="status">{{ 'Status'|t('export') }}</label></td>
                     <td class="light">{{ 'Dropdown'|t('export') }}</td>
                 </tr>
                 <tr>
@@ -272,7 +271,18 @@
                             checked: settings.elementData.dateCreated is defined ? (settings.elementData.dateCreated == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'Date Created'|t('export') }}</td>
+                    <td><label for="dateCreated">{{ 'Date Created'|t('export') }}</label></td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'dateUpdated',
+                            name: 'fields[elementData][dateUpdated]',
+                            checked: settings.elementData.dateUpdated is defined ? (settings.elementData.dateUpdated == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="dateUpdated">{{ 'Date Updated'|t('export') }}</label></td>
                     <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
                 <tr>
@@ -283,7 +293,7 @@
                             checked: settings.elementData.lastLoginDate is defined ? (settings.elementData.lastLoginDate == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'Last Login Date'|t('export') }}</td>
+                    <td><label for="lastLoginDate">{{ 'Last Login Date'|t('export') }}</label></td>
                     <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
             {% elseif export.getElementTypeDisplayName() == 'Category' or export.getElementTypeDisplayName() == 'Entry' %}
@@ -295,7 +305,7 @@
                             checked: settings.elementData.title is defined ? (settings.elementData.title == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'Title'|t('export') }}</td>
+                    <td><label for="title">{{ 'Title'|t('export') }}</label></td>
                     <td class="light">{{ 'Plain Text'|t('export') }}</td>
                 </tr>
                 {% if export.getElementTypeDisplayName() == 'Entry' %}
@@ -307,7 +317,7 @@
                                 checked: settings.elementData.author is defined ? (settings.elementData.author == 1 ? true : false) : true,
                             }) }}
                         </td>
-                        <td>{{ 'Author'|t('export') }}</td>
+                        <td><label for="author">{{ 'Author'|t('export') }}</label></td>
                         <td class="light">{{ 'E-mail'|t('export') }}</td>
                     </tr>
                     <tr>
@@ -318,7 +328,7 @@
                                 checked: settings.elementData.postDate is defined ? (settings.elementData.postDate == 1 ? true : false) : true,
                             }) }}
                         </td>
-                        <td>{{ 'Post Date'|t('export') }}</td>
+                        <td><label for="postDate">{{ 'Post Date'|t('export') }}</label></td>
                         <td class="light">{{ 'Date/Time'|t('export') }}</td>
                     </tr>
                 {% endif %}
@@ -330,7 +340,7 @@
                             checked: settings.elementData.dateCreated is defined ? (settings.elementData.dateCreated == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'Date Created'|t('export') }}</td>
+                    <td><label for="dateCreated">{{ 'Date Created'|t('export') }}</label></td>
                     <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
                 <tr>
@@ -341,7 +351,7 @@
                             checked: settings.elementData.dateUpdated is defined ? (settings.elementData.dateUpdated == 1 ? true : false) : true,
                         }) }}
                     </td>
-                    <td>{{ 'Date Updated'|t('export') }}</td>
+                    <td><label for="dateUpdated">{{ 'Date Updated'|t('export') }}</label></td>
                     <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
             {% endif %}
@@ -362,7 +372,7 @@
                                 checked: settings.customData[field.handle] is defined ? (settings.customData[field.handle] == 1 ? true : false) : true,
                             }) }}
                         </td>
-                        <td>{{ field.name }}</td>
+                        <td><label for="{{ field.handle }}">{{ field.name }}</label></td>
                         <td class="light">{{ field.displayName() }}</td>
                     </tr>
                 {% endfor %}

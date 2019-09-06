@@ -21,9 +21,7 @@
                      alt="Construction worker">
             </div>
             <h2>{{ 'Download export'|t('export') }}</h2>
-            <p>Nihil hic munitissimus habendi senatus locus, nihil horum? Ullamco laboris nisi ut aliquid ex ea commodi
-                consequat. Salutantibus vitae elit libero, a pharetra augue. Quis aute iure reprehenderit in voluptate
-                velit esse.</p>
+            <p>{{ 'Run your export and download the file. If you have many elements to export, this might take a minute.'|t('export') }}</p>
             <a class="btn submit" href="{{ actionUrl('export/export/download-export', {'exportId': export.id}) }}">{{ 'Download'|t('export') }} {{ export.filename ~ '.' ~ export.exportType }}</a>
         </div>
         <div class="halfwidth">
@@ -55,7 +53,6 @@
 
     {# TODO: create a task and run in backgound #}
     {# TODO: show loader (see Feed Me) #}
-
     {#<div class="container--center">
         <img src="{{ craft.app.assetManager.getPublishedUrl('@statikbe/export/assetbundles/indexcpsection/dist/img', true, 'female-office-worker.png') }}"
              alt="Construction worker">

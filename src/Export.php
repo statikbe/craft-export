@@ -102,7 +102,7 @@ class Export extends Plugin
                 $event->rules['/export/exports/<exportId>'] = 'export/template/edit-export';
                 $event->rules['/export/exports/<exportId>/settings'] = 'export/template/edit-settings';
                 $event->rules['/export/exports/<exportId>/run'] = 'export/template/export-ready';
-                $event->rules['/export/exports/<exportId>/download'] = 'export/template/export-download';
+                //$event->rules['/export/exports/<exportId>/download'] = 'export/template/export-download';
             }
         );
 

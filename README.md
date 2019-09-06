@@ -2,7 +2,7 @@
 
 Export elements from Craft
 
-![Screenshot](resources/img/plugin-logo.png)
+![Screenshot](resources/img/screenshot-run-export.png)
 
 ## Requirements
 
@@ -24,20 +24,10 @@ To install the plugin, follow these instructions.
 
 ## Export Overview
 
--Insert text here-
+Create exports.
+![Screenshot](resources/img/screenshot-export.png)
 
-## Configuring Export
-
--Insert text here-
-
-## Using Export
-
--Insert text here-
-
-## Export Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Release it
+Choose your custom settings.
+![Screenshot](resources/img/screenshot-settings.png)
 
 Brought to you by [Statik](https://statik.be)
