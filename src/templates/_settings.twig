@@ -20,8 +20,7 @@
     <input type="hidden" name="exportId" value="{{ export.id }}">
 
     <h2>{{ 'Give settings to your export'|t('export') }}</h2>
-
-    {% if export.getElementTypeDisplayName() == 'User' %}
+    {% if export.elementType == 'craft\\elements\\User' %}
 
         <div class="inline">
             <div class="inline__item">
@@ -79,8 +78,7 @@
             </div>
         </div>
 
-    {% elseif export.getElementTypeDisplayName() == 'Entry' %}
-
+    {% elseif export.elementType == "craft\\elements\\Entry" %}
         <div class="inline">
             <div class="inline__item">
                 {{ forms.selectField({
@@ -138,7 +136,7 @@
             </div>
         </div>
 
-    {% elseif export.getElementTypeDisplayName() == 'Category' %}
+    {% elseif export.elementType == 'craft\\elements\\Category' %}
 
         <div class="inline">
             <div class="inline__item">
@@ -195,9 +193,7 @@
         </div>
 
     {% endif %}
-
     <br>
-
     <h2>{{ 'Which fields do you want to include in the export?'|t('export') }}</h2>
     <br>
 

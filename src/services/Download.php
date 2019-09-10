@@ -59,14 +59,14 @@ class Download extends Component
 
         $exportData[] = $headings;
 
-        switch ($export->getElementTypeDisplayName()) {
-            case 'Entry':
+        switch ($export->elementType) {
+            case 'craft\elements\Entry':
                 $elements = Entry::find()->sectionId($export->elementGroup[$export->elementType]['section'])->typeId($export->elementGroup[$export->elementType]['entryType']);
                 break;
-            case 'User':
+            case 'craft\elements\User':
                 $elements = User::find()->groupId($export->elementGroup[$export->elementType]);
                 break;
-            case 'Category':
+            case 'craft\elements\Category':
                 $elements = Category::find()->groupId($export->elementGroup[$export->elementType]);
         }
 
