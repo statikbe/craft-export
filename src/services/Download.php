@@ -215,7 +215,7 @@ class Download extends Component
     private function getFieldValue($field, $handle, $element)
     {
         $displayName = $field::valueType();
-        if ($displayName == 'string|null' or $displayName == 'mixed' or $displayName == 'craft\fields\data\ColorData|null') {
+        if ($displayName == 'string|null' or $displayName == 'mixed' or $displayName == 'craft\fields\data\ColorData|null' or $displayName == 'int|float|null') {
             return $element->$handle;
         } elseif ($displayName == 'bool') {
             return $element->$handle == 1 ? 1 : 0;
