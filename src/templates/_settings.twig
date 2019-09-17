@@ -358,11 +358,24 @@
                     <th colspan="3"><h4 class="pt-10 pb-10">{{ "Custom fields"|t('export') }}</h4></th>
                 </tr>
 
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'allCustomFields',
+                            name: 'fields[allCustomFields]',
+                            checked: settings.allCustomFields is defined ? (settings.allCustomFields == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="allCustomFields"><strong>{{ "Select all"|t('export') }}</strong></label></td>
+                    <td></td>
+                </tr>
+
                 {% for field in fields %}
                     <tr>
                         <td>
                             {{ forms.checkboxField({
                                 id: field.handle,
+                                class: 'fieldsCustomData',
                                 name: 'fields[customData][' ~ field.handle ~ ']',
                                 errors: export.getErrors(field.handle),
                                 checked: settings.customData[field.handle] is defined ? (settings.customData[field.handle] == 1 ? true : false) : true,

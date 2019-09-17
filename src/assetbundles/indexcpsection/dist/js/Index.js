@@ -49,3 +49,11 @@ $(document).on('change', '.element-parent-group select', function () {
 });
 
 $('.element-parent-group select').trigger('change');
+
+$('#allCustomFields').on('change', function() {
+    console.log($('#allCustomFields')[0].checked);
+    var checkboxes = $('.fieldsCustomData');
+    for(var i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = $('#allCustomFields')[0].checked;
+    }
+});
