@@ -139,14 +139,14 @@ class Download extends Component
 
         $exportData = [];
 
-        switch ($export->getElementTypeDisplayName()) {
-            case 'Entry':
+        switch ($export->elementType) {
+            case 'craft\elements\Entry':
                 $elements = Entry::find()->sectionId($export->elementGroup[$export->elementType]['section'])->typeId($export->elementGroup[$export->elementType]['entryType']);
                 break;
-            case 'User':
+            case 'craft\elements\User':
                 $elements = User::find()->groupId($export->elementGroup[$export->elementType]);
                 break;
-            case 'Category':
+            case 'craft\elements\Category':
                 $elements = Category::find()->groupId($export->elementGroup[$export->elementType]);
         }
 
@@ -214,35 +214,35 @@ class Download extends Component
 
     private function getFieldValue($field, $handle, $element)
     {
-        $displayName = $field::displayName();
-        if ($displayName == 'Plain Text' or $displayName == 'Redactor' or $displayName == 'Email' or $displayName == 'Number' or $displayName == 'URL' or $displayName == 'Color') {
+        $displayName = $field::valueType();
+        if ($displayName == 'string|null' or $displayName == 'mixed' or $displayName == 'craft\fields\data\ColorData|null') {
             return $element->$handle;
-        } elseif ($displayName == 'Lightswitch') {
+        } elseif ($displayName == 'bool') {
             return $element->$handle == 1 ? 1 : 0;
-        } elseif ($displayName == 'Dropdown' or $displayName == 'Radio Buttons') {
+        } elseif ($displayName == 'craft\fields\data\SingleOptionFieldData') {
             return $element->$handle ? $element->$handle->label : '';
-        } elseif ($displayName == 'Assets') {
+        } elseif ($displayName == 'craft\elements\db\AssetQuery') {
             $assets = $element->$handle->all();
             $value = [];
             foreach ($assets as $asset) {
                 array_push($value, $asset->filename);
             }
             return implode(', ', $value);
-        } elseif ($displayName == 'Entries' or $displayName == 'Categories' or $displayName == 'Tags') {
+        } elseif ($displayName == 'craft\elements\db\EntryQuery' or $displayName == 'craft\elements\db\CategoryQuery' or $displayName == 'craft\elements\db\TagQuery') {
             $items = $element->$handle->all();
             $value = [];
             foreach ($items as $item) {
                 array_push($value, $item->title);
             }
             return implode(', ', $value);
-        } elseif ($displayName == 'Users') {
+        } elseif ($displayName == 'craft\elements\db\UserQuery') {
             $users = $element->$handle->all();
             $value = [];
             foreach ($users as $user) {
                 array_push($value, $user->email);
             }
             return implode(', ', $value);
-        } elseif ($displayName == 'Multi-select' or $displayName == 'Checkboxes') {
+        } elseif ($displayName == 'craft\fields\data\MultiOptionsFieldData') {
             $options = $element->$handle->getOptions();
             $value = [];
             foreach ($options as $option) {
@@ -251,13 +251,13 @@ class Download extends Component
                 }
             }
             return implode(', ', $value);
-        } elseif ($displayName == 'Date/Time') {
+        } elseif ($displayName == 'DateTime|null') {
             if ($element->$handle) {
                 return $element->$handle->format('d/m/Y H:i');
             } else {
                 return '';
             }
-        } elseif ($displayName == 'Table' or $displayName == 'Matrix' or $displayName == 'Super Table') {
+        } elseif ($displayName == 'array|null') {
             return json_encode($element->$handle);
         } else {
             return 'Field Type not found';
