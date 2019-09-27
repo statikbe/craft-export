@@ -319,6 +319,17 @@
                     <tr>
                         <td>
                             {{ forms.checkboxField({
+                                id: 'status',
+                                name: 'fields[elementData][status]',
+                                checked: settings.elementData.status is defined ? (settings.elementData.status == 1 ? true : false) : true,
+                            }) }}
+                        </td>
+                        <td><label for="status">{{ 'Status'|t('export') }}</label></td>
+                        <td class="light">{{ 'Dropdown'|t('export') }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ forms.checkboxField({
                                 id: 'postDate',
                                 name: 'fields[elementData][postDate]',
                                 checked: settings.elementData.postDate is defined ? (settings.elementData.postDate == 1 ? true : false) : true,
@@ -348,6 +359,17 @@
                         }) }}
                     </td>
                     <td><label for="dateUpdated">{{ 'Date Updated'|t('export') }}</label></td>
+                    <td class="light">{{ 'Date/Time'|t('export') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ forms.checkboxField({
+                            id: 'expiryDate',
+                            name: 'fields[elementData][expiryDate]',
+                            checked: settings.elementData.expiryDate is defined ? (settings.elementData.expiryDate == 1 ? true : false) : true,
+                        }) }}
+                    </td>
+                    <td><label for="dateCreated">{{ 'Expiry Date'|t('export') }}</label></td>
                     <td class="light">{{ 'Date/Time'|t('export') }}</td>
                 </tr>
             {% endif %}

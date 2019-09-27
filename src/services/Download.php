@@ -184,6 +184,8 @@ class Download extends Component
                     }
                 }
 
+                dd('end');
+
                 $exportData[] = $row;
             }
 
@@ -259,6 +261,20 @@ class Download extends Component
             }
         } elseif ($displayName == 'array|null') {
             return json_encode($element->$handle);
+        } elseif ($displayName == 'craft\elements\db\MatrixBlockQuery') {
+            //d($element->$handle->all());
+            //return json_encode($element->$handle->all());
+
+            //foreach ($element->$handle->all() as $block) {
+                //d($block);
+                //foreach ($block['customFields'] as $subField) {
+                    //d($subField);
+                    //d($this->getFieldValue($subField, $subField->handle, $element->$handle));
+                //}
+            //}
+
+            return 'Matrix fields are not supported';
+
         } else {
             return 'Field Type not found';
         }
