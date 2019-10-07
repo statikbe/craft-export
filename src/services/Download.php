@@ -184,8 +184,6 @@ class Download extends Component
                     }
                 }
 
-                dd('end');
-
                 $exportData[] = $row;
             }
 
