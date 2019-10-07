@@ -201,7 +201,7 @@ class Download extends Component
             return $element->$handle;
         } elseif ($handle == 'author') {
             return $element->$handle->email ?? '';
-        } elseif ($handle == 'postDate' or $handle == 'dateCreated' or $handle == 'dateUpdated' or $handle == 'lastLoginDate') {
+        } elseif ($handle == 'postDate' or $handle == 'dateCreated' or $handle == 'dateUpdated' or $handle == 'lastLoginDate' or $handle == 'expiryDate') {
             if ($element->$handle) {
                 return $element->$handle->format('d/m/Y H:i');
             } else {
